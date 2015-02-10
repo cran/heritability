@@ -42,8 +42,8 @@ experiments conducted by Padraic Flood <flood@mpipz.mpg.de>
 %}
 \references{
 \itemize{
-\item Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+\item Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 }
 }
 \seealso{

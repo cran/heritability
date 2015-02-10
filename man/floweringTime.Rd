@@ -37,8 +37,8 @@ Only accessions for which SNP-data are available are included here: 167 accessio
 \item Atwell, S., Y. S. Huang, B. J. Vilhjalmsson, G. Willems, M. Horton, \emph{et al.} (2010)
 Genome-wide association study of 107 phenotypes in Arabidopsis thaliana inbred lines. Nature
 465: 627-631.
-\item Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+\item Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 }
 }
 \seealso{

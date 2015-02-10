@@ -18,7 +18,7 @@ marker_h2_means(data.vector, geno.vector, K, Dm=NULL, alpha = 0.05, eps = 1e-06,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data.vector}{
-A vector of phenotypic observations. Needs to be of type numeric. May contain
+A vector of phenotypic observations, typically genotypic means. Needs to be of type numeric. May contain
 missing values.
 }
   \item{geno.vector}{
@@ -30,7 +30,7 @@ A genetic relatedness or kinship matrix, typically marker-based.
 Must have row- and column-names corresponding to the levels of \code{geno.vector}
 }
 \item{Dm}{
-See details.
+Covariance of the genotypic means contained in data.vector; see details. Should be of class matrix, with row- and column-names corresponding to the levels of \code{geno.vector}
 }
   \item{alpha}{
 Confidence level, for the 1-alpha confidence intervals.
@@ -62,10 +62,10 @@ The vector of additive genetic effects \eqn{(G_1,...,G_n)'} follows a
 multivariate normal distribution with mean zero and covariance \eqn{\sigma_A^2 K},
 where \eqn{\sigma_A^2} is the additive genetic variance, and \eqn{K} is a genetic relatedness matrix derived from a dense set of markers.
 The vector of errors \eqn{(E_1,...,E_n)'} follows a
-multivariate normal distribution with mean zero and covariance \eqn{\sigma_E^2 R},
-where \eqn{R} is the covariance of the means obtained from the initial analysis.
+multivariate normal distribution with mean zero and covariance \eqn{\sigma_E^2 D_m},
+where \eqn{D_m} is the covariance of the means obtained from the initial analysis.
 In case of a completely randomized design with \eqn{r_i} replicates for genotypes
-\eqn{i=1,...,n}, \eqn{R} is diagonal with elements \eqn{1 / r_i}.
+\eqn{i=1,...,n}, \eqn{D_m} is diagonal with elements \eqn{1 / r_i}.
 Under certain assumptions (see Speed \emph{et al.} 2012) the marker- or chip-heritability \eqn{h^2 = \sigma_A^2 / (\sigma_A^2 + \sigma_E^2)}
 equals the narrow-sense heritability.
 %
@@ -107,8 +107,8 @@ A list with the following components:
 \itemize{
 \item Gilmour \emph{et al.} Gilmour, A.R., R. Thompson and B.R. Cullis (1995) Average Information {REML}: An Efficient Algorithm for Variance Parameter
 	Estimation in Linear Mixed Models. \emph{Biometrics}, volume 51, number 4, 1440-1450.
-\item Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+\item Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 \item Speed, D., G. Hemani, M. R. Johnson, and D.J. Balding (2012) Improved heritability
 estimation from genome-wide snps. \emph{the American journal of human genetics} 91: 1011-1021.
 }

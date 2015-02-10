@@ -4,7 +4,7 @@
 \description{
 Given a population where each genotype is phenotyped for a number of genetically
 identical replicates (either individual plants or plots in a field trial), the repeatability
-or intra-class correlation (Kempthorne, 1957) can be estimated by
+or intra-class correlation can be estimated by
 \eqn{V_g / (V_g + V_e)}, where \eqn{V_g = (MS(G) - MS(E)) / r} and \eqn{V_e = MS(E)}. In these expressions,
 \eqn{r} is the number of replicates per genotype, and \eqn{MS(G)} and \eqn{MS(E)} are
 the mean sums of squares for genotype and residual error obtained from analysis
@@ -47,9 +47,8 @@ A list with the following components:
 }
 \references{
 \itemize{
-\item Kempthorne, Oscar (1957) An introduction to genetic statistics. \emph{New York: John Wiley and Sons}
-\item Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+\item Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 \item Lynch, M., and B. Walsh (1998) Genetics and Analysis of Quantitative Traits. Sinauer As-
 sociates, 1st edition.
 \item Singh, M., S. Ceccarelli, and J. Hamblin (1993) Estimation of heritability from varietal

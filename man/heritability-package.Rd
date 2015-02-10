@@ -3,7 +3,7 @@
 \alias{heritability}
 \docType{package}
 \title{
-Marker-based estimation of heritability using individual plant or plot data.
+Marker-Based Estimation of Heritability Using Individual Plant or Plot Data.
 }
 \description{
 The package implements marker-based estimation
@@ -29,8 +29,8 @@ Willem Kruijer
 Maintainer: Willem Kruijer <willlem.kruijer@wur.nl>
 }
 \references{
-Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 }
 \keyword{ heritability }
 \keyword{ mixed model }

@@ -93,7 +93,7 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
   K          <-  K[as.character(Y$genotype),as.character(Y$genotype)]
   Dm         <- Dm[as.character(Y$genotype),as.character(Y$genotype)]
 
-  Dm_inv     <- solve(Dm)
+  Dm_inv     <- ginv(Dm)
 
   N          <- nrow(Y)
 
@@ -115,8 +115,8 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
 
     while (sum((varcomp.old - varcomp)^2) > eps & n.iter < max.iter) {
   
-      Vinv   <- solve(varcomp[1] * K + varcomp[2] * Dm)
-      P      <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+      Vinv   <- ginv(varcomp[1] * K + varcomp[2] * Dm)
+      P      <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
       
       deltaL <- -0.5 * c(sum(diag(P %*% K)) - t(y) %*% P %*% K %*% P %*% y,sum(diag(P %*% Dm)) - t(y) %*% P %*% Dm %*% P %*% y)
       
@@ -126,7 +126,7 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
       AI[2,2]<- 0.5 * as.numeric(t(y) %*% P %*% Dm %*% P %*% Dm %*% P %*% y)
   
       varcomp.old <- varcomp
-      varcomp     <- varcomp + as.numeric(solve(AI) %*% deltaL)
+      varcomp     <- varcomp + as.numeric(ginv(AI) %*% deltaL)
   
       # reset negative values
       #if (sum(varcomp < 0) ==2) {rep(var(as.numeric(y)) / 2,2)}
@@ -156,8 +156,8 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
     }
     
     # FINAL ESTIMATE AI-MATRIX
-    Vinv   <- solve(varcomp[1] * K + varcomp[2] * Dm)
-    P      <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)    
+    Vinv   <- ginv(varcomp[1] * K + varcomp[2] * Dm)
+    P      <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)    
     AI     <- matrix(0,2,2)
     AI[1,2]<- AI[2,1] <- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% Dm %*% P %*% y)
     AI[1,1]<- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% K %*% P %*% y)
@@ -166,13 +166,13 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
   } else {
 
     # profile likelihood, see e.g. Crainiceanu Ruppert (2004), bottom of p.3  (applied here without the lambda parametrization)
-    VunscaledInv <- solve(h2 * K + (1-h2) * Dm)
-    betaHat      <- solve(t(X) %*% VunscaledInv %*% X) %*% t(X) %*% VunscaledInv %*% y
+    VunscaledInv <- ginv(h2 * K + (1-h2) * Dm)
+    betaHat      <- ginv(t(X) %*% VunscaledInv %*% X) %*% t(X) %*% VunscaledInv %*% y
     sigma2       <- (1 / ncol(VunscaledInv)) * t(y - X %*% betaHat) %*% VunscaledInv %*% (y - X %*% betaHat)
     varcomp <- c(h2 * sigma2, (1-h2) * sigma2)
 
-    Vinv   <- solve(varcomp[1] * K + varcomp[2] * Dm)
-    P      <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+    Vinv   <- ginv(varcomp[1] * K + varcomp[2] * Dm)
+    P      <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
       
     deltaL <- -0.5 * c(sum(diag(P %*% K)) - t(y) %*% P %*% K %*% P %*% y,sum(diag(P %*% Dm)) - t(y) %*% P %*% Dm %*% P %*% y)
       
@@ -192,9 +192,9 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
 
   tX_Z <- t(X) %*% Dm_inv #apply(Z,2,sum)
 
-  Cm <- rbind(cbind(t(X) %*% Dm_inv %*% X,tX_Z),cbind(t(tX_Z),Dm_inv + (varcomp[2]/varcomp[1]) * GINV(K)))
+  Cm <- rbind(cbind(t(X) %*% Dm_inv %*% X,tX_Z),cbind(t(tX_Z),Dm_inv + (varcomp[2]/varcomp[1]) * ginv(K)))
 
-  Pnew <- Dm_inv - Dm_inv %*% W %*% GINV(Cm) %*% t(W) %*% Dm_inv
+  Pnew <- Dm_inv - Dm_inv %*% W %*% ginv(Cm) %*% t(W) %*% Dm_inv
   
   ###########
   
@@ -211,7 +211,7 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
 
   loglik <-  -0.5 * (2*sum(log(diag(chol(V))))  + log(det(t(X) %*% Vinv %*% X)) +  t(y) %*% P %*% y)   
 
-  return(list(varcomp=varcomp,inv.ai=GINV(AI),inv.ai.new=GINV(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
+  return(list(varcomp=varcomp,inv.ai=ginv(AI),inv.ai.new=ginv(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
 }
 
 

@@ -103,8 +103,8 @@ A list with the following components:
 \itemize{
 \item Gilmour \emph{et al.} Gilmour, A.R., R. Thompson and B.R. Cullis (1995) Average Information {REML}: An Efficient Algorithm for Variance Parameter
 	Estimation in Linear Mixed Models. \emph{Biometrics}, volume 51, number 4, 1440-1450.
-\item Kruijer, W. \emph{et al.} (submitted) Marker-based estimation of heritability in immortal
-populations.
+\item Kruijer, W. \emph{et al.} (2015) Marker-based estimation of heritability in immortal
+populations. \emph{Genetics}, Vol. 199(2), p. 1-20.
 \item Speed, D., G. Hemani, M. R. Johnson, and D.J. Balding (2012) Improved heritability
 estimation from genome-wide snps. \emph{the American journal of human genetics} 91: 1011-1021.
 }
@@ -125,9 +125,9 @@ data(K_atwell)
 # Heritability estimation for all observations:
 #out <- marker_h2(data.vector=LD$LD,geno.vector=LD$genotype,
 #                 covariates=LD[,4:8],K=K_atwell)
-# Heritability estimation for a randomly chosen subset of 50 accessions:
+# Heritability estimation for a randomly chosen subset of 20 accessions:
 set.seed(123)
-sub.set <- which(LD$genotype \%in\% sample(levels(LD$genotype),50))
+sub.set <- which(LD$genotype \%in\% sample(levels(LD$genotype),20))
 out <- marker_h2(data.vector=LD$LD[sub.set],geno.vector=LD$genotype[sub.set],
                  covariates=LD[sub.set,4:8],K=K_atwell)
 }

@@ -21,7 +21,23 @@ marker_h2_means <- function(data.vector,geno.vector,K,Dm=NULL,alpha=0.05,
 # OUTPUT :
 # heritability, genetic - and residual variance
 
-
+    if (is.null(rownames(K)) | is.null(colnames(K))) {
+      stop('K should have row- and column-names corresponding to the levels of geno.vector')
+    }
+  
+  
+    if (is.null(Dm)) {
+      Dm <- diag(nrow(K))
+      rownames(Dm) <- colnames(Dm) <- colnames(K)
+      cat('Warning: it is assumed that each phenotypic values corresponds to an observation on a single individual.','\n')
+      cat('If each phenotypic value is the mean of observations on r genetically identical individuals in a completely randomized design,','\n')
+      cat('Dm should be diag(1/r,nrow=nrow(K)). More generally, in other designs, Dm should be the covariance matrix of the genotypic means. ','\n')
+    } 
+    
+    if (is.null(rownames(Dm)) | is.null(colnames(Dm))) {
+      stop('Dm should have row- and column-names corresponding to the levels of geno.vector')
+    }
+    
     her.frame            <- data.frame(dat=data.vector,genotype=geno.vector)
     her.frame$genotype   <- as.character(her.frame$genotype)
 
@@ -31,7 +47,8 @@ marker_h2_means <- function(data.vector,geno.vector,K,Dm=NULL,alpha=0.05,
     K <- K[unique(her.frame$genotype),unique(her.frame$genotype)]
     K <- K / KinshipTransform(K)
 
-    if (is.null(Dm)) {Dm <- K} else {Dm <- Dm[unique(her.frame$genotype),unique(her.frame$genotype)]}
+    #if (is.null(Dm)) {Dm <- K} else {
+    Dm <- Dm[unique(her.frame$genotype),unique(her.frame$genotype)]
 
     VALUE <- as.data.frame(her.frame$dat)
     names(VALUE)[1] <- 'value'

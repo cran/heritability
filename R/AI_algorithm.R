@@ -15,7 +15,7 @@
 #' 
 #' @details ...
 #' @examples ...
-#' @export              return(list(varcomp=varcomp,inv.ai=solve(AI),inv.ai.new=solve(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
+#' @export              return(list(varcomp=varcomp,inv.ai=ginv(AI),inv.ai.new=ginv(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
 AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FALSE,h2=0.5) {   # X=matrix(rep(1,nrow(Y)))
 
   # Y=data.frame(genotype=her.frame$genotype,VALUE)
@@ -115,10 +115,10 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
     # Use the AI-alogortihm as described in Yang,  Hong Lee,Goddard and Visscher 2011 (GCTA paper)
   
     # initial step, following Yang et al (2011; GCTA paper) : update genetic variance following the EM-algorithm
-    Vinv           <- solve(varcomp[1] * K + varcomp[2] * diag(N))
+    Vinv           <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
     # before 17-1:
     #P              <- Vinv - (Vinv %*% (X %*% t(X)) %*% Vinv) / as.numeric(t(X) %*% Vinv %*% X)
-    P              <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+    P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
   
     varcomp.old[1] <- varcomp[1]
     varcomp[1]     <- (1/N) * ((varcomp[1])^2 * as.numeric(t(y) %*% P %*% K %*% P %*% y) + sum(diag(varcomp[1] * diag(N) - (varcomp[1])^2 * P %*% K)) )
@@ -137,8 +137,8 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
     
     while (sum((varcomp.old - varcomp)^2) > eps & n.iter < max.iter) {
   
-      Vinv           <- solve(varcomp[1] * K + varcomp[2] * diag(N))
-      P              <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+      Vinv           <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
+      P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
       deltaL         <- -0.5 * c(sum(diag(P %*% K)) - t(y) %*% P %*% K %*% P %*% y, sum(diag(P)) - t(y) %*% P %*% P %*% y )
       
       AI     <- matrix(0,2,2)
@@ -147,7 +147,7 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
       AI[2,2]<- 0.5 * as.numeric(t(y) %*% P %*% P %*% P %*% y)
   
       varcomp.old <- varcomp
-      varcomp     <- varcomp + as.numeric(solve(AI) %*% deltaL)
+      varcomp     <- varcomp + as.numeric(ginv(AI) %*% deltaL)
   
       # reset negative values
       if (sum(varcomp < 0) ==2) {rep(var(as.numeric(y)) / 2,2)}
@@ -174,8 +174,8 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
     }
 
     # FINAL ESTIMATE AI-MATRIX
-    Vinv           <- solve(varcomp[1] * K + varcomp[2] * diag(N))
-    P              <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)    
+    Vinv           <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
+    P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)    
     AI     <- matrix(0,2,2)
     AI[1,2]<- AI[2,1] <- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% P %*% y)
     AI[1,1]<- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% K %*% P %*% y)
@@ -184,8 +184,8 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
   } else {            
     varcomp <- c(h2 * var(as.numeric(y)), (1-h2) * var(as.numeric(y)))
     
-    Vinv   <- solve(varcomp[1] * K + varcomp[2] * diag(N))
-    P              <- Vinv - (Vinv %*% X %*% solve(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+    Vinv   <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
+    P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
       
     deltaL <-  -0.5 * c(sum(diag(P %*% K)) - t(y) %*% P %*% K %*% P %*% y, sum(diag(P)) - t(y) %*% P %*% P %*% y )
       
@@ -221,8 +221,8 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
   loglik <-  -0.5 * (2*sum(log(diag(chol(V))))  + log(det(t(X) %*% Vinv %*% X)) +  t(y) %*% P %*% y)   
 
 
-  #return(list(varcomp=varcomp,inv.ai=solve(AI),inv.ai.new=solve(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
-# 17 sept. 2014: solve ==> ginv
+  #return(list(varcomp=varcomp,inv.ai=ginv(AI),inv.ai.new=ginv(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
+# 17 sept. 2014: ginv ==> ginv
 return(list(varcomp=varcomp,inv.ai=GINV(AI),inv.ai.new=GINV(AInew),n.iter=n.iter,eps=eps,loglik=loglik,converge=converge))
 }
 

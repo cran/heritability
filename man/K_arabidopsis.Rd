@@ -25,9 +25,6 @@ to construct relatedness matrices from genotypic data, but such functions can be
 For example, the \code{kin} function in the R-package \code{synbreed} (Wimmer \emph{et al.}, 2012), or
 (outside R) GCTA (Yang \emph{et al.}, 2011), LDAK (Speed \emph{et al.}, 2012), Fast-LMM (Lippert, 2011) and GEMMA (Zhou and Stephens, 2012).
 }
-\source{
-The SNP-data were obtained from \url{http://cynin.gmi.oeaw.ac.at/home/resources/atpolydb/250k-snp-data/call_method_75.tar.gz}
-}
 \references{
 \itemize{
 \item W. Astle and D.J. Balding (2009) Population Structure and Cryptic Relatedness in Genetic Association Studies.
