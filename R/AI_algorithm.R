@@ -116,12 +116,18 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
   
     # initial step, following Yang et al (2011; GCTA paper) : update genetic variance following the EM-algorithm
     Vinv           <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
-    # before 17-1:
-    #P              <- Vinv - (Vinv %*% (X %*% t(X)) %*% Vinv) / as.numeric(t(X) %*% Vinv %*% X)
-    P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+    
+    ginvXVX        <- ginv(t(X) %*% Vinv %*% X)
+    
+    VinvX          <- Vinv %*% X
+    
+    P              <- Vinv - (VinvX %*% (ginvXVX %*% t(VinvX)))
   
     varcomp.old[1] <- varcomp[1]
-    varcomp[1]     <- (1/N) * ((varcomp[1])^2 * as.numeric(t(y) %*% P %*% K %*% P %*% y) + sum(diag(varcomp[1] * diag(N) - (varcomp[1])^2 * P %*% K)) )
+    
+    Py             <- P %*% y
+    
+    varcomp[1]     <- (1/N) * ((varcomp[1])^2 * as.numeric(t(Py) %*% (K %*% Py) + sum(diag(varcomp[1] * diag(N) - (varcomp[1])^2 * P %*% K)) ))
     varcomp[2]     <- max(0,var(as.numeric(y)) - varcomp[1])
 
     # reset negative values
@@ -138,13 +144,27 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
     while (sum((varcomp.old - varcomp)^2) > eps & n.iter < max.iter) {
   
       Vinv           <- ginv(varcomp[1] * K + varcomp[2] * diag(N))
-      P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
-      deltaL         <- -0.5 * c(sum(diag(P %*% K)) - t(y) %*% P %*% K %*% P %*% y, sum(diag(P)) - t(y) %*% P %*% P %*% y )
+      
+      ginvXVX        <- ginv(t(X) %*% Vinv %*% X)
+      
+      VinvX          <- Vinv %*% X
+      
+      P              <- Vinv - (VinvX %*% (ginvXVX %*% t(VinvX)))      
+
+      Py             <- P %*% y
+      
+      KP             <- K %*% P
+      PKP            <- P %*% KP
+      KPK            <- KP %*% K
+      
+      #P              <- Vinv - (Vinv %*% X %*% ginv(t(X) %*% Vinv %*% X) %*% t(X) %*% Vinv)
+      deltaL         <- - 0.5 * c(sum(apply(P * K, 1,sum)) - t(Py) %*% (K %*% Py), sum(diag(P)) -  sum(Py^2)) # t(y) %*% P %*% P %*% y
+      
       
       AI     <- matrix(0,2,2)
-      AI[1,2]<- AI[2,1] <- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% P %*% y)
-      AI[1,1]<- 0.5 * as.numeric(t(y) %*% P %*% K %*% P %*% K %*% P %*% y)
-      AI[2,2]<- 0.5 * as.numeric(t(y) %*% P %*% P %*% P %*% y)
+      AI[1,2]<- AI[2,1] <- 0.5 * as.numeric(t(y) %*% (PKP %*% Py))
+      AI[1,1]<- 0.5 * as.numeric(t(Py) %*% (KPK %*% Py))
+      AI[2,2]<- 0.5 * as.numeric(t(Py) %*% (P %*% Py))
   
       varcomp.old <- varcomp
       varcomp     <- varcomp + as.numeric(ginv(AI) %*% deltaL)

@@ -1,2 +1,4 @@
 export(repeatability,marker_h2,marker_h2_means)
 import(MASS)
+importFrom("stats", "anova", "as.formula", "deriv", "lm", "qf",
+             "qnorm", "runif", "var")
