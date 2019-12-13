@@ -34,18 +34,18 @@ AI_algorithm_weights <- function(Y,K,Dm,eps = 0.000000001,max.iter=100,
 
   if (escape < 0 | escape >=0.5) {escape <- 0}
 
-  if (!(class(K) %in% c('matrix','data.frame'))) {stop("K should be of class matrix or data.frame")}
-  if (class(K)=='data.frame') {class(K) <- 'matrix'}
+  if (!inherits(K, 'matrix') && !inherits(K, 'data.frame')) {stop("K should be of class matrix or data.frame")}
+  if (inherits(K, 'data.frame')) {class(K) <- 'matrix'}
   if (is.null(colnames(K)) | is.null(rownames(K))) {stop("K should have column and row names")}
 
-  if (!(class(Dm) %in% c('matrix','data.frame'))) {stop("Dm should be of class matrix or data.frame")}
-  if (class(Dm)=='data.frame') {class(Dm) <- 'matrix'}
+  if (!inherits(Dm, 'matrix') && !inherits(Dm, 'data.frame')) {stop("Dm should be of class matrix or data.frame")}
+  if (inherits(Dm, 'data.frame')) {class(Dm) <- 'matrix'}
   if (is.null(colnames(Dm)) | is.null(rownames(Dm))) {stop("Dm should have column and row names")}
 
-  if (class(Y)!='data.frame') {stop("Y should be of class data.frame")}
+  if (!inherits(Y , 'data.frame')) {stop("Y should be of class data.frame")}
   if (ncol(Y) < 1) {stop("Y should be a data.frame with at least two columns: \n The first column of Y should contain the genotype labels, and should be of class factor or character. \n The second column should contain the phenotypic values.")}
 
-  if (!(class(Y[,1]) %in% c('factor','character'))) {stop("The first column of Y should contain the genotype labels, and should be of class factor or character.")}
+  if (!inherits(Y[,1], 'factor') && !inherits(Y[, 1], 'character')) {stop("The first column of Y should contain the genotype labels, and should be of class factor or character.")}
   if (sum( unlist(lapply(Y,class)) %in% c('integer','numeric')) < (ncol(Y) - 1)) {stop("The first column of Y should contain the genotype labels; \n All other columns should be of type numeric or integer.")}
 
   if (max(table(Y[,1])) > 1) {stop("The first column of Y should contain the genotype labels, and each genotype should occur at most once.")}

@@ -47,15 +47,15 @@ AI_algorithm <- function(Y,K,eps = 0.000000001,max.iter=25,escape=0.1,fix.h2=FAL
 
   if (escape < 0 | escape >=0.5) {escape <- 0}
 
-  if (class(Y)!='data.frame') {stop("Y should be of class data.frame")}
-  if (!(class(K) %in% c('matrix','data.frame'))) {stop("K should be of class matrix or data.frame")}
-  if (class(K)=='data.frame') {class(K) <- 'matrix'}
+  if (!inherits(Y, 'data.frame')) {stop("Y should be of class data.frame")}
+  if (!inherits(K, 'matrix') && !inherits(K, 'data.frame')) {stop("K should be of class matrix or data.frame")}
+  if (inherits(K, 'data.frame')) {class(K) <- 'matrix'}
   if (is.null(colnames(K)) | is.null(rownames(K))) {stop("K should have column and row names")}
 
-  if (class(Y)!='data.frame') {stop("Y should be of class data.frame")}
+  #if (class(Y)!='data.frame') {stop("Y should be of class data.frame")}
   if (ncol(Y) < 2) {stop("Y should be a data.frame with at least two columns: \n The first column of Y should contain the genotype labels, and should be of class factor or character. \n The second column should contain the phenotypic values")}
 
-  if (!(class(Y[,1]) %in% c('factor','character'))) {stop("The first column of Y should contain the genotype labels, and should be of class factor or character.")}
+  if (!inherits(Y[,1], 'factor') && !inherits(Y[, 1], 'character')) {stop("The first column of Y should contain the genotype labels, and should be of class factor or character.")}
   if (sum( unlist(lapply(Y,class)) %in% c('integer','numeric')) < (ncol(Y) - 1)) {stop("The first column of Y should contain the genotype labels; \n All other columns should be of type numeric or integer.")}
 
   # If there are no covariates, add an intercept
