@@ -22,8 +22,7 @@ Matrices whose row- and column names are the ecotype or seed-stock IDs of the ac
 The matrices were computed using equation (2.2) in Astle and Balding (2009); see also
 Goddard \emph{et al.} (2009). The \code{heritability}-package does not contain functions
 to construct relatedness matrices from genotypic data, but such functions can be found in many other software packages.
-For example, the \code{kin} function in the R-package \code{synbreed} (Wimmer \emph{et al.}, 2012), or
-(outside R) GCTA (Yang \emph{et al.}, 2011), LDAK (Speed \emph{et al.}, 2012), Fast-LMM (Lippert, 2011) and GEMMA (Zhou and Stephens, 2012).
+For example, GCTA (Yang \emph{et al.}, 2011), LDAK (Speed \emph{et al.}, 2012), Fast-LMM (Lippert, 2011) and GEMMA (Zhou and Stephens, 2012).
 }
 \references{
 \itemize{
@@ -43,8 +42,6 @@ mapping of local climate-sensitive quantitative trait loci in arabidopsis thalia
 linear mixed models for genome-wide association studies. \emph{Naure methods} 8: 833-835.
 \item Speed, D., G. Hemani, M. R. Johnson, and D.J. Balding (2012) Improved heritability
 estimation from genome-wide snps. \emph{the American journal of human genetics} 91: 1011-1021.
-\item Wimmer, V., T. Albrecht, H-J. Auinger, and C-C. Schoen (2012) synbreed: a framework
-for the analysis of genomic prediction data using r. \emph{bioinformatics} 28: 2086-2087.
 \item Yang, J., S.H. Lee, M.E. Goddard, and P.M. Visscher (2011) GCTA: a tool for genomewide
 complex trait analysis. \emph{the American journal of human genetics} 88: 76-82.
 \item Zhou, X., and M. Stephens, (2012) Genome-wide efficient mixed-model analysis for association

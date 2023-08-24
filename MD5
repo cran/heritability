@@ -1,4 +1,4 @@
-f49b2af5fb9687f943af26e1607baee3 *DESCRIPTION
+a36e895b113bb2e0fba0effd40c7908f *DESCRIPTION
 6b6a9c2d9604ff16115ba5195b6f57da *NAMESPACE
 8341f1f8d306364a498e41cf6fb680f6 *R/AI_algorithm.R
 d5aa80d5e5c8ec256a7163e3b1222209 *R/AI_algorithm_weights.r
@@ -22,10 +22,10 @@ be37979dc1d54d852274ffebf6610da3 *data/R_matrix_LDV.rda
 84e1290a6d63256e803b96f237782369 *data/means_LD.rda
 1232f5146c6eec9254dc92184ac283e4 *data/means_LDV.rda
 366528b341e3309a587bf585c9756395 *man/BT_LW_H.Rd
-4b0e29ba6e464a702993e834d8e7eb6a *man/K_arabidopsis.Rd
+c64754d5be61237044932ffdd61a4c1c *man/K_arabidopsis.Rd
 b60dd4d90aab2172dc1adca3f4827c38 *man/R_matrix.Rd
 6811e2600fbd8cfa9719b9746e25e419 *man/floweringTime.Rd
-1b25554a507ba15d5bba9df1c0ecf693 *man/heritability-package.Rd
+79a8a88a0405aae2a5640fc36420e99d *man/heritability-package.Rd
 84aeff99fd5616df6bfaf6b64aaf9421 *man/leafArea.Rd
 ab57bae95b178cba0c48074bdddb6796 *man/marker_h2.Rd
 6c13480e93ce21935bfaf0df5712faba *man/marker_h2_means.Rd

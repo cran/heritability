@@ -15,15 +15,6 @@ For comparison, also mixed-model based estimation using genotypic means (\code{m
 and estimation of repeatability with ANOVA (\code{repeatability}) are implemented.
 For illustration the package contains several datasets for the model species \emph{Arabidopsis thaliana}.
 }
-\details{
-\tabular{ll}{
-Package: \tab heritability\cr
-Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2014-10-30\cr
-License: \tab GPL-3\cr
-}
-}
 \author{
 Willem Kruijer
 Maintainer: Willem Kruijer <willlem.kruijer@wur.nl>
